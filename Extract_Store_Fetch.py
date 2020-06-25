@@ -70,33 +70,27 @@ def bikesPerTimeSnapShot(json_data):
 #using sql2 table we will insert total no of bikes present at a particular timesnapshot
 def databaseInsert(cursor,db,time_snap_shot_bike_data,bike_point_details):
     sql1="insert into Bike_Detail(bikepointname, noofbike, datetime) VALUES (%s, %s, %s)"
-    count=0
+
     #inserting into Total_Bike_Table using sql2
     sql2="insert into time_snap_shot_detail(datetime, noofbike) VALUES (%s, %s)"
     for date_time in time_snap_shot_bike_data:
         datetime=date_time
         no_of_bikes=str(time_snap_shot_bike_data[date_time])
         value=(datetime,no_of_bikes)
-        print(value)
         cursor.execute(sql2,value)
         db.commit()
-        count+=1
-        if count == 5:
-            break
+        
     
-    count=0
+    
     #inserting into Bike Table using sql1
     for bikepoint in bike_point_details:
         bikepointname=bikepoint
         noofbikes=bike_point_details[bikepoint][0]
         datetime=bike_point_details[bikepoint][1]
         value=(bikepointname,noofbikes,datetime)
-        print(value)
         cursor.execute(sql1,value)
         db.commit()
-        count+=1
-        if count == 5:     
-            break
+        
     
      
 #this function will fetch no of bikes available as per user's selection of bikepointname and currenttime
